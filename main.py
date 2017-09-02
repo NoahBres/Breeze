@@ -3,6 +3,9 @@
 import re
 from robobrowser import RoboBrowser
 
+#temporary for debugging
+from pprint import pprint
+
 baseURL = 'https://dashboard.okaloosaschools.com'
 loginURL = '/parentportal/PP000.pgm'
 
@@ -95,19 +98,26 @@ studentInfo['homeroom'] = str(sideBar[7])[41:-5]
 gradeSection = browser.find_all("table", class_="classarea")[3].find_all("tr")
 gradeSection = gradeSection[2:-1]
 
+counter = 2
+
 ### Teacher Info ###
-# for sec in gradeSection:
-# 	#print(sec.find_all("td"))
-# 	for className in sec.find_all("td"):
-# 		print(className.attrs)
-# 		if(className.attrs['title']):
-# 			print("me")
+for sec in gradeSection:
+ 	#print(sec.find_all("td"))
+	for className in sec.find_all("td"):
+		if 'title' in className.attrs:
+			if counter % 2 == 0:
+				schedule['semester1']['classes'].append(className.attrs['title'])
+			else:
+				schedule['semester1']['teachers'].append(className.attrs['title'])
+
+			counter += 1
+			#print(className.attrs['title'])
 
 #print(gradeSection)
 #print(str(gradeSection[0]))
 
 print("\nStudent data:")
-print(studentInfo)
+pprint(studentInfo)
 print("\nSchedule:")
-print(schedule)
+pprint(schedule)
 #print(str(sideBarElements[7])[41:-5])

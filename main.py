@@ -100,7 +100,7 @@ gradeSection = gradeSection[2:-1]
 
 counter = 2
 
-### Teacher Info ###
+### Teacher/Class Info ###
 for sec in gradeSection:
  	#print(sec.find_all("td"))
 	for className in sec.find_all("td"):
@@ -111,10 +111,11 @@ for sec in gradeSection:
 				schedule['semester1']['teachers'].append(className.attrs['title'])
 
 			counter += 1
-			#print(className.attrs['title'])
 
-#print(gradeSection)
-#print(str(gradeSection[0]))
+for sec in gradeSection:
+	for period in sec.find_all('td', { "title": "", "align": "" }):
+		schedule['semester1']['periods'].append(period.text)
+
 
 print("\nStudent data:")
 pprint(studentInfo)

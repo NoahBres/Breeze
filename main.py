@@ -112,10 +112,25 @@ for sec in gradeSection:
 
 			counter += 1
 
+### Period Info ###
 for sec in gradeSection:
 	for period in sec.find_all('td', { "title": "", "align": "" }):
 		schedule['semester1']['periods'].append(period.text)
 
+### Grade Info ###
+for sec in gradeSection:
+	for i, boop in enumerate(sec.find_all('td', { "align": "right" })):
+		if(i + 5 % 5 == 0):
+			schedule['semester1']['quarter1'].append(boop.findChildren()[0].text)
+			#print(boop.findChildren()[0].text)
+		if(i + 5 % 5 == 1):
+			schedule['semester1']['quarter2'].append(boop.findChildren()[0].text)
+		if(i + 5 % 5 == 2):
+			schedule['semester1']['exams'].append(boop.text)
+		if(i + 5 % 5 == 3):
+			schedule['semester1']['total'].append(boop.text)
+		if(i + 5 % 5 == 4):
+			schedule['semester1']['final'].append(boop.text)
 
 print("\nStudent data:")
 pprint(studentInfo)

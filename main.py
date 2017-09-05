@@ -189,16 +189,26 @@ for sec in gradeSection:
 	for i, boop in enumerate(sec.find_all('td', { "align": "right" })):
 		if(i + 5 % 5 == 0):
 			# browser.follow_link(boop.findChildren()[0])
+			linkHrefStuff = boop.findChildren()[0]['href']
+			linkProcStuff = linkHrefStuff[80:-2].replace("'", '')
+			linkProcSplit = linkProcStuff.split(",")
+
+			# Clean up list
+			linkProcSplit[:] = [s.replace('\n\t', '') for s in linkProcSplit]
+			linkProcSplit[:] = [s.replace(' ', '') for s in linkProcSplit]
+			print(linkProcSplit)
+
 			browser.session.get(grPdReqUrl)
 			browser.session.get(schlReqUrl)
-			browser.open('https://dashboard.okaloosaschools.com/parentportal/PP200.pgm?SMURFID=' + SMURFID)
-			print(browser.parsed)
 			
-			debugfile = open("debug.html", "a")
-			debugfile.write("\n\n\n" + str(browser.parsed))
-			debugfile.close()
+			browser.open('https://dashboard.okaloosaschools.com/parentportal/PP200.pgm?SMURFID=' + SMURFID)
+			# # print(browser.parsed)
+			
+			# debugfile = open("debug.html", "a")
+			# debugfile.write("\n\n\n" + str(browser.parsed))
+			# debugfile.close()
 
-			browser.back()
+			# browser.back()
 
 			# print(boop.findChildren()[0])
 

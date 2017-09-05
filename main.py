@@ -38,7 +38,44 @@ schedule = {
 		'exams'   : [],
 		'total'   : [],
 		'final'   : []
+	},
+
+	'semester2' : {
+		'classes' : [],
+		'periods' : [],
+		'teachers': [],
+		'quarter1': [],
+		'quarter2': [],
+		'exams'   : [],
+		'total'   : [],
+		'final'   : []
 	}
+}
+
+''' 
+Info:
+
+classes
+	category summary
+		category
+		weight
+		percent
+	category
+		assignment
+			due date
+			recevied
+			max
+			weight
+			grade
+			note
+'''
+classes = {
+	'category_summary': [
+		
+	],
+
+	'category': [
+	]
 }
 
 ### Read Credential File ###
@@ -132,8 +169,53 @@ for sec in gradeSection:
 		if(i + 5 % 5 == 4):
 			schedule['semester1']['final'].append(boop.text)
 
+### Class Grade Info ###
+#apparently wrkgrpd=1 is 1st quarter and wrkgrpd=2 is 2nd quarter. This needs to best tested with others quarters
+SMURFID = redirectURL[32:64]
+
+grPdReqUrlStart = "https://dashboard.okaloosaschools.com/parentportal/DP400.pgm?task=setgrpd&SmurfId="
+grPdReqUrlEnd = "&timestamp=&wrkgrpd=1"
+
+grPdReqUrl = grPdReqUrlStart + SMURFID + grPdReqUrlEnd
+print(grPdReqUrl)
+
+schlReqStart = "https://dashboard.okaloosaschools.com/parentportal/DP400.pgm?task=setschl&SmurfId="
+schlReqEnd = "&timestamp=&wrkschl=0211"
+
+schlReqUrl = schlReqStart + SMURFID + schlReqEnd
+print(schlReqUrl)
+
+for sec in gradeSection:
+	for i, boop in enumerate(sec.find_all('td', { "align": "right" })):
+		if(i + 5 % 5 == 0):
+			# browser.follow_link(boop.findChildren()[0])
+			browser.session.get(grPdReqUrl)
+			browser.session.get(schlReqUrl)
+			browser.open('https://dashboard.okaloosaschools.com/parentportal/PP200.pgm?SMURFID=' + SMURFID)
+			print(browser.parsed)
+			
+			debugfile = open("debug.html", "a")
+			debugfile.write("\n\n\n" + str(browser.parsed))
+			debugfile.close()
+
+			browser.back()
+
+			# print(boop.findChildren()[0])
+
+
 print("\nStudent data:")
 pprint(studentInfo)
 print("\nSchedule:")
 pprint(schedule)
-#print(str(sideBarElements[7])[41:-5])
+
+
+# javascript:Send_Set_GrPd_Request('1');
+# 	Send_Set_Schl_Request('0211');
+# 	lnkProc('https://dashboard.okaloosaschools.com/parentportal/', '53753817031820170902122482973922', 
+# 	'DP400', '', '', 'PP200', 
+# 	'', '1001350', '001', '4602020856', 
+# 	'495034725');
+
+# https://dashboard.okaloosaschools.com/parentportal/DP400.pgm?SMURFID=53753817031820170902122482973922&rand=817017318
+
+# https://dashboard.okaloosaschools.com/parentportal/PP200.pgm?SmurfId=53753817031820170902122482973922&rand=495034725

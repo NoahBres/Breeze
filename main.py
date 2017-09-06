@@ -196,19 +196,38 @@ for sec in gradeSection:
 			# Clean up list
 			linkProcSplit[:] = [s.replace('\n\t', '') for s in linkProcSplit]
 			linkProcSplit[:] = [s.replace(' ', '') for s in linkProcSplit]
-			print(linkProcSplit)
+			#print(linkProcSplit)
+
+			linkProcUrl = "https://dashboard.okaloosaschools.com/parentportal/DP900.pgm?task=lnkproc&SmurfId=" + linkProcSplit[1]
+			linkProcUrl += "&timestamp=&from_menu=" + linkProcSplit[2]
+			linkProcUrl += "&to_menu=" + linkProcSplit[3]
+			linkProcUrl += "&from_pgm=" + linkProcSplit[4]
+			linkProcUrl += "&to_pgm=" + linkProcSplit[5]
+			linkProcUrl += "&wrkstaf=" + linkProcSplit[6]
+			linkProcUrl += "&wrkcrse=" + linkProcSplit[7]
+			linkProcUrl += "&wrksect=" + linkProcSplit[8]
+			linkProcUrl += "&wrkstdt=" + linkProcSplit[9]
+			
+			print(grPdReqUrl)
+			print('\n')
+			print(schlReqUrl)
+			print('\n')
+			print(linkProcUrl)
+			print("-" * 10)
 
 			browser.session.get(grPdReqUrl)
 			browser.session.get(schlReqUrl)
+			browser.session.get(linkProcUrl)
 			
-			browser.open('https://dashboard.okaloosaschools.com/parentportal/PP200.pgm?SMURFID=' + SMURFID)
-			# # print(browser.parsed)
+			browser.open('https://dashboard.okaloosaschools.com/parentportal/PP200.pgm?SMURFID=' + SMURFID + "&rand=")
+			print(browser.parsed)
 			
-			# debugfile = open("debug.html", "a")
-			# debugfile.write("\n\n\n" + str(browser.parsed))
-			# debugfile.close()
+			debugfile = open("debug.html", "a")
+			debugfile.truncate()
+			debugfile.write("\n\n\n" + str(browser.parsed))
+			debugfile.close()
 
-			# browser.back()
+			browser.back()
 
 			# print(boop.findChildren()[0])
 

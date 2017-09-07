@@ -177,13 +177,16 @@ grPdReqUrlStart = "https://dashboard.okaloosaschools.com/parentportal/DP400.pgm?
 grPdReqUrlEnd = "&timestamp=&wrkgrpd=1"
 
 grPdReqUrl = grPdReqUrlStart + SMURFID + grPdReqUrlEnd
-print(grPdReqUrl)
+# print(grPdReqUrl)
 
 schlReqStart = "https://dashboard.okaloosaschools.com/parentportal/DP400.pgm?task=setschl&SmurfId="
 schlReqEnd = "&timestamp=&wrkschl=0211"
 
 schlReqUrl = schlReqStart + SMURFID + schlReqEnd
-print(schlReqUrl)
+# print(schlReqUrl)
+
+# Debug variable. Delete later
+count = 0
 
 for sec in gradeSection:
 	for i, boop in enumerate(sec.find_all('td', { "align": "right" })):
@@ -208,35 +211,69 @@ for sec in gradeSection:
 			linkProcUrl += "&wrksect=" + linkProcSplit[8]
 			linkProcUrl += "&wrkstdt=" + linkProcSplit[9]
 			
-			print(grPdReqUrl)
-			print('\n')
-			print(schlReqUrl)
-			print('\n')
-			print(linkProcUrl)
-			print("-" * 10)
+			# print(grPdReqUrl)
+			# print('\n')
+			# print(schlReqUrl)
+			# print('\n')
+			# print(linkProcUrl)
+			# print("-" * 10)
 
 			browser.session.get(grPdReqUrl)
 			browser.session.get(schlReqUrl)
 			browser.session.get(linkProcUrl)
 			
 			browser.open('https://dashboard.okaloosaschools.com/parentportal/PP200.pgm?SMURFID=' + SMURFID + "&rand=")
-			print(browser.parsed)
+			#print(browser.parsed)
 			
-			debugfile = open("debug.html", "a")
-			debugfile.truncate()
-			debugfile.write("\n\n\n" + str(browser.parsed))
-			debugfile.close()
+			# Debugging
+			# debugfile = open("debug" + str(count) +".html", "a")
+			# debugfile.truncate()
+			# debugfile.write(str(browser.parsed))
+			# debugfile.close()
+
+			# Parse information
+			categories = browser.find_all("table", class_="classarea")[1:]
+			
+			# Category Summary
+			summaryCat = categories[-1].find_all("tr")[2:]
+
+			for item in summaryCat:
+				if count == 4:
+					pprint(item.findChildren()[0].text)
+
+				summaryList = []
+				summaryList.append(item.findChildren()[0].text)
+				summaryList.append(item.findChildren()[1].text)
+				summaryList.append(item.findChildren()[2].text.replace('\xa0', ''))
+
+				classes['category_summary'].append(summaryList)
+
+			# if(count == 4):
+			# 	pprint(summaryCat)
+
+			#for cat in categories:	
+				# tHead = cat.find_all('thead')
+
+				# for cat in tHead:
+				# 	if(count == 4):
+				# 		print(cat.findChildren()[0])
+
+				#if(count == 4):
+				#	print(tHead.findChildren()[0])
+			#if(count == 4):
+				#print(categories[1:])
 
 			browser.back()
 
-			# print(boop.findChildren()[0])
+			count += 1
 
 
 print("\nStudent data:")
 pprint(studentInfo)
 print("\nSchedule:")
 pprint(schedule)
-
+print("\nClasses:")
+pprint(classes)
 
 # javascript:Send_Set_GrPd_Request('1');
 # 	Send_Set_Schl_Request('0211');

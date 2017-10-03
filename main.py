@@ -1,6 +1,7 @@
 # TODO: redo scraping info that uses substring so it isn't as ugly
 
 import re
+import requests
 from robobrowser import RoboBrowser
 
 #temporary for debugging
@@ -110,6 +111,7 @@ def main():
 	loginForm['wrkuser'].value = loginCred['wrkuser']
 	loginForm['wrkpasswd'].value = loginCred['wrkpasswd']
 
+
 	browser.submit_form(loginForm)
 
 	### Redirect ###
@@ -138,6 +140,8 @@ def main():
 	studentInfo['grade'] = str(sideBar[5])[38:-37]
 	studentInfo['date'] = str(sideBar[5])[-14:-5]
 	studentInfo['homeroom'] = str(sideBar[7])[41:-5]
+	studentInfo['gpa-weight'] = str(sideBar[9])[41:47]
+	studentInfo['gpa-noweight'] = str(sideBar[9])[75:81]
 
 	### Grade Stuff ###
 	gradeSection = browser.find_all("table", class_="classarea")[3].find_all("tr")
@@ -253,8 +257,8 @@ def main():
 					#if count == 4:
 					#	print(summaryCat)
 
-					if count == 6:
-						print(summaryCat)
+					#if count == 6:
+						#print(summaryCat)
 
 					temp = []
 					temp.append(item.findChildren()[0].text)
@@ -302,7 +306,8 @@ def main():
 #def goToClass():
 
 if __name__ == "__main__":
-	if siteUp('https://dashboard.okaloosaschools.com/parentportal'):
+	if siteUp('https://dashboard.okaloosaschools.com/parentportal/PP000.pgm'):
+		readConfig()
 		main()
 	else:
 		print("Site not up")

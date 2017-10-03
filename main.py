@@ -97,8 +97,6 @@ def readConfig():
 
 	configFile.close()
 
-	print(loginCred)
-
 def main():
 
 	### Init ###

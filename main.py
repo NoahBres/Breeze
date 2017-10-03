@@ -247,6 +247,11 @@ def main():
 				# Category Summary
 				summaryCat = categories[-1].find_all("tr")[2:]
 
+				if count == 6:
+					print(summaryCat)
+				elif count == 5:
+					print(summaryCat)
+
 				summaryList = []
 				for item in summaryCat:
 					#if count == 4:

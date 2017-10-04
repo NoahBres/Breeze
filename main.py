@@ -243,14 +243,16 @@ def main():
 
 				# Parse information
 				categories = browser.find_all("table", class_="classarea")[1:]
-				
+
 				# Category Summary
 				summaryCat = categories[-1].find_all("tr")[2:]
 
-				if count == 6:
-					print(summaryCat)
-				elif count == 5:
-					print(summaryCat)
+				print(len(categories))
+
+				# if count == 6:
+				# 	print(len(categories))
+				# elif count == 5:
+				# 	print(len(categories))
 
 				summaryList = []
 				for item in summaryCat:

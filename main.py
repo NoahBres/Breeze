@@ -53,6 +53,9 @@ schedule = {
 	}
 }
 
+headers = {
+	'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'
+}
 ''' 
 Info:
 
@@ -80,8 +83,24 @@ classes = {
 }
 
 def siteUp(site):
-	request = requests.get(site)
-
+	try: 
+		request = requests.get(site, headers=headers, timeout=5)
+	except requests.ConnectionError as e:
+		print("Oops! Connection Error. Make sure you are connected to Internet. Technical Details given below.\n")
+		print(str(e))
+		return False
+	except requests.Timeout as e:
+		print("OOPS!! Timeout Error")
+		print(str(e))
+		return False
+	except requests.RequestException as e:
+		print("OOPS!! General Error")
+		print(str(e))
+		return False
+	except KeyboardInterrupt:
+		print("Someone closed the program")
+		return False
+		
 	return request.status_code == 200
 
 def readConfig():
@@ -149,7 +168,7 @@ def main():
 
 	### Teacher/Class Info ###
 	for sec in gradeSection:
-	 	#print(sec.find_all("td"))
+		#print(sec.find_all("td"))
 		for className in sec.find_all("td"):
 			if 'title' in className.attrs:
 				if counter % 2 == 0:
@@ -266,27 +285,13 @@ def main():
 						temp.append(item.findChildren()[2].text.replace('\xa0', ''))
 						summaryList.append(temp)
 
-					#print(summaryList)
 					classes['category_summary'].append(summaryList)
-				# if(count == 4):
-				# 	pprint(summaryCat)
-
-				#for cat in categories:	
-					# tHead = cat.find_all('thead')
-
-					# for cat in tHead:
-					# 	if(count == 4):
-					# 		print(cat.findChildren()[0])
-
-					#if(count == 4):
-					#	print(tHead.findChildren()[0])
-				#if(count == 4):
-					#print(categories[1:])
+				
+				# Category Details
+				if count == 3:
+					pprint(categories)
 
 				browser.back()
-
-				count += 1
-
 
 	print("\nStudent data:")
 	pprint(studentInfo)
@@ -296,11 +301,11 @@ def main():
 	pprint(classes)
 
 
-	print("\nCategories:")
-	for cat in classes['category_summary']:
-		print("---")
-		for c in cat:
-			print(c)
+	# print("\nCategories:")
+	# for cat in classes['category_summary']:
+	# 	print("---")
+	# 	for c in cat:
+	# 		print(c)
 
 #def goToClass():
 

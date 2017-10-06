@@ -195,10 +195,7 @@ def main():
 	schlReqUrl = schlReqStart + SMURFID + schlReqEnd
 	# print(schlReqUrl)
 
-	# Debug variable. Delete later
-	count = 0
-
-	for sec in gradeSection:
+	for count, sec in enumerate(gradeSection):
 		for i, boop in enumerate(sec.find_all('td', { "align": "right" })):
 			if(i + 5 % 5 == 0):
 				# browser.follow_link(boop.findChildren()[0])
@@ -247,33 +244,30 @@ def main():
 				# Category Summary
 				summaryCat = categories[-1].find_all("tr")[2:]
 
-				print(len(categories))
+				# If the teacher doesn't implement categories
+				if(len(categories) == 1):
+					classes['category_summary'].append([['Assignments', '100.0', schedule['semester1']['total'][count].replace(" / ", "")]])
+				# Otherwise, show categories
+				else:
+					summaryList = []
+					for item in summaryCat:
+						#if count == 4:
+							#pprint(item.findChildren()[0].text)
 
-				# if count == 6:
-				# 	print(len(categories))
-				# elif count == 5:
-				# 	print(len(categories))
+						#if count == 4:
+						#	print(summaryCat)
 
-				summaryList = []
-				for item in summaryCat:
-					#if count == 4:
-						#pprint(item.findChildren()[0].text)
+						#if count == 6:
+							#print(summaryCat)
 
-					#if count == 4:
-					#	print(summaryCat)
+						temp = []
+						temp.append(item.findChildren()[0].text)
+						temp.append(item.findChildren()[1].text)
+						temp.append(item.findChildren()[2].text.replace('\xa0', ''))
+						summaryList.append(temp)
 
-					#if count == 6:
-						#print(summaryCat)
-
-					temp = []
-					temp.append(item.findChildren()[0].text)
-					temp.append(item.findChildren()[1].text)
-					temp.append(item.findChildren()[2].text.replace('\xa0', ''))
-					summaryList.append(temp)
-
-				#print(summaryList)
-				classes['category_summary'].append(summaryList)
-
+					#print(summaryList)
+					classes['category_summary'].append(summaryList)
 				# if(count == 4):
 				# 	pprint(summaryCat)
 

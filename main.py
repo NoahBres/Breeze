@@ -161,7 +161,8 @@ def main():
 	studentInfo['gpa-noweight'] = str(sideBar[9])[75:81]
 
 	### Grade Stuff ###
-	gradeSection = browser.find_all("table", class_="classarea")[3].find_all("tr")
+	gradeSection = browser.find_all("table", class_="classarea")[4].find_all("tr")
+	print(len(gradeSection))
 	gradeSection = gradeSection[2:-1]
 
 	counter = 2
@@ -288,8 +289,8 @@ def main():
 					classes['category_summary'].append(summaryList)
 				
 				# Category Details
-				if count == 3:
-					pprint(categories)
+				# if count == 3:
+				# 	pprint(categories)
 
 				browser.back()
 

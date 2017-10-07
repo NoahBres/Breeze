@@ -161,8 +161,14 @@ def main():
 	studentInfo['gpa-noweight'] = str(sideBar[9])[75:81]
 
 	### Grade Stuff ###
-	gradeSection = browser.find_all("table", class_="classarea")[4].find_all("tr")
-	print(len(gradeSection))
+	tableSections = browser.find_all("table", class_="classarea")
+	
+	gradePosition = 3
+	if len(tableSections) == 8:
+		gradePosition = 4
+	gradeSection = tableSections[gradePosition].find_all("tr")
+	print(len(tableSections))
+	#print(tableSections)
 	gradeSection = gradeSection[2:-1]
 
 	counter = 2

@@ -171,19 +171,19 @@ def main():
 	#print(tableSections)
 	gradeSection = gradeSection[2:-1]
 
-	counter = 2
+	classCounter = 2
 
 	### Teacher/Class Info ###
 	for sec in gradeSection:
 		#print(sec.find_all("td"))
 		for className in sec.find_all("td"):
 			if 'title' in className.attrs:
-				if counter % 2 == 0:
+				if classCounter % 2 == 0:
 					schedule['semester1']['classes'].append(className.attrs['title'])
 				else:
 					schedule['semester1']['teachers'].append(className.attrs['title'])
 
-				counter += 1
+				classCounter += 1
 
 	### Period Info ###
 	for sec in gradeSection:

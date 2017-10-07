@@ -60,11 +60,11 @@ headers = {
 Info:
 
 classes
-	category summary
+	categories
 		category
 		weight
 		percent
-	category
+	assignments (category)
 		assignment
 			due date
 			recevied
@@ -74,11 +74,11 @@ classes
 			note
 '''
 classes = {
-	'category_summary': [
+	'categories': [
 		
 	],
 
-	'category': [
+	'assignments': [
 	]
 }
 
@@ -90,11 +90,11 @@ def siteUp(site):
 		print(str(e))
 		return False
 	except requests.Timeout as e:
-		print("OOPS!! Timeout Error")
+		print("Oops! Timeout Error")
 		print(str(e))
 		return False
 	except requests.RequestException as e:
-		print("OOPS!! General Error")
+		print("Oops! General Error")
 		print(str(e))
 		return False
 	except KeyboardInterrupt:
@@ -167,7 +167,7 @@ def main():
 	if len(tableSections) == 8:
 		gradePosition = 4
 	gradeSection = tableSections[gradePosition].find_all("tr")
-	print(len(tableSections))
+	# print(len(tableSections))
 	#print(tableSections)
 	gradeSection = gradeSection[2:-1]
 
@@ -267,12 +267,12 @@ def main():
 				# Parse information
 				categories = browser.find_all("table", class_="classarea")[1:]
 
-				# Category Summary
+			# Category Summary
 				summaryCat = categories[-1].find_all("tr")[2:]
 
 				# If the teacher doesn't implement categories
 				if(len(categories) == 1):
-					classes['category_summary'].append([['Assignments', '100.0', schedule['semester1']['total'][count].replace(" / ", "")]])
+					classes['categories'].append([['categories', '100.0', schedule['semester1']['total'][count].replace(" / ", "")]])
 				# Otherwise, show categories
 				else:
 					summaryList = []
@@ -292,11 +292,17 @@ def main():
 						temp.append(item.findChildren()[2].text.replace('\xa0', ''))
 						summaryList.append(temp)
 
-					classes['category_summary'].append(summaryList)
+					classes['categories'].append(summaryList)
+
+			# Assignment stuff
+
+				if len(categories) != 1:
+					categories = categories[:-1]
 				
-				# Category Details
-				# if count == 3:
-				# 	pprint(categories)
+				for assign in categories.find_all('tr'):
+					print(assign)
+
+				print("\n------")
 
 				browser.back()
 
@@ -309,7 +315,7 @@ def main():
 
 
 	# print("\nCategories:")
-	# for cat in classes['category_summary']:
+	# for cat in classes['categories']:
 	# 	print("---")
 	# 	for c in cat:
 	# 		print(c)

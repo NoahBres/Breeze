@@ -298,9 +298,35 @@ def main():
 
 				if len(categories) != 1:
 					categories = categories[:-1]
-				
-				for assign in categories.find_all('tr'):
-					print(assign)
+
+				for items in categories:
+					assignments = items.find_all('tr')[3:]
+
+					temp = []
+
+					for infos in assignments:
+						info = infos.find_all('td')[::2] # only even items because the devs use empty elements as spaces. Ugh
+
+						temp2 = []
+
+						# print(info[0].findChildren()[0].text)
+						# print(info[1].text)
+
+						temp2.append(info[0].findChildren()[0].text)
+						temp2.append(info[1].text)
+						temp2.append(info[2].text)
+						temp2.append(info[3].text)
+						temp2.append(info[4].text)
+						temp2.append(info[5].text[:-4])
+						temp2.append(info[6].text.strip())
+
+						temp.append(temp2)
+
+					classes['assignments'].append(temp)
+
+
+					# if count == 3 or count == 6:
+					# 	pprint(info)
 
 				print("\n------")
 

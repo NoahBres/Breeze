@@ -1,2 +1,5 @@
-#Config file for ignoring sensitive credentials
+# Config file for ignoring sensitive credentials
 .config
+
+# Intellij
+.idea/
